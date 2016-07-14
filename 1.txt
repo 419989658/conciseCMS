@@ -1,6 +1,0 @@
-Git is a version control system.
-Git is free software.
-456456456456456456
-789456123
-456789
-Git tracks changes
