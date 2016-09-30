@@ -1,13 +1,27 @@
 <?php
+/**
+ * Yii bootstrap file.
+ *
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
+
+require(__DIR__ . '/BaseYii.php');
 
 /**
- * User: 彩色珊瑚
- * Date: 2016/7/14
- * Time: 21:52
- * Email:lq8841149@163.com
+ * Yii is a helper class serving common framework functionalities.
+ *
+ * It extends from [[\yii\BaseYii]] which provides the actual implementation.
+ * By writing your own Yii class, you can customize some functionalities of [[\yii\BaseYii]].
+ *
+ * @author Qiang Xue <qiang.xue@gmail.com>
+ * @since 2.0
  */
-require(__DIR__.'BaseYii.php');
-class Yii extends yii\BaseYii
+class Yii extends \yii\BaseYii
 {
-
 }
+
+spl_autoload_register(['Yii', 'autoload'], true, true);
+Yii::$classMap = require(__DIR__ . '/classes.php');
+Yii::$container = new yii\di\Container();
