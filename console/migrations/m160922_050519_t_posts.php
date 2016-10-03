@@ -4,13 +4,14 @@ use yii\db\Migration;
 
 class m160922_050519_t_posts extends Migration
 {
+    private $tableName = '{{%posts}}';
     public function up()
     {
         $tableOptions = null;
         if($this->db->driverName = 'mysql'){
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
-        $this->createTable('{{%posts}}',[
+        $this->createTable($this->tableName,[
             'id'=>$this->primaryKey(),
             'title'=>$this->string()->notNull(),
             'author'=>$this->string()->notNull(),
@@ -23,9 +24,7 @@ class m160922_050519_t_posts extends Migration
 
     public function down()
     {
-        echo "m160922_050519_t_posts cannot be reverted.\n";
-
-        return false;
+        parent::dropTable($this->tableName);
     }
 
     /*

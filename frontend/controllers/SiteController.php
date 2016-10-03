@@ -73,11 +73,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $code=200;
-        $message='success';
-        $data=['id'=>2,'name'=>'concise','age'=>20];
-        Response::encodeJSON($code,$message,$data);
-        //return $this->render('index');
+        return $this->render('index');
     }
 
     public function actionTest()

@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160928_122301_post_tag_pivot extends Migration
 {
+    private $tableName = "{{%post_tag_pivot}}";
     public function up()
     {
         $tableOptions = null;
@@ -11,7 +12,7 @@ class m160928_122301_post_tag_pivot extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
-        $this->createTable("{{%post_tag_pivot}}",[
+        $this->createTable($this->tableName,[
             'id'=>$this->primaryKey(),
             'post_id'=>$this->integer()->unsigned()->notNull(),
             'tag_id'=>$this->integer()->unsigned()->notNull(),
@@ -31,9 +32,7 @@ class m160928_122301_post_tag_pivot extends Migration
 
     public function down()
     {
-        echo "m160928_122301_post_tag_pivot cannot be reverted.\n";
-
-        return false;
+        parent::dropTable($this->tableName);
     }
 
     /*

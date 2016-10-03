@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160928_121829_tags extends Migration
 {
+    private $tableName = "{{%tags}}";
     public function up()
     {
         $tableOptions = null;
@@ -11,9 +12,9 @@ class m160928_121829_tags extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
-        $this->createTable("{{%tags}}",[
+        $this->createTable($this->tableName,[
             'id'=>$this->primaryKey(),
-            'tag'=>$this->string()->notNull(),
+            'tag'=>$this->string()->notNull(), //标签名
             'meta_description'=>$this->string(),
             'tag_img'=>$this->string(),
             'created_at'=>$this->integer()->notNull(),
@@ -23,9 +24,7 @@ class m160928_121829_tags extends Migration
 
     public function down()
     {
-        echo "m160928_121829_tags cannot be reverted.\n";
-
-        return false;
+        $this->dropTable($this->tableName);
     }
 
     /*
