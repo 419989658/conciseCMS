@@ -1,7 +1,11 @@
 <?php
 namespace frontend\controllers;
 
+use common\component\FixedCostStrategy;
+use common\component\Lecture;
 use common\component\Response;
+use common\component\Seminar;
+use common\component\TimedCostStrategy;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -73,7 +77,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        //return $this->render('index');
+        $lessons[] = new Lecture(4,new FixedCostStrategy());
+        $lessons[] = new Seminar(4,new TimedCostStrategy());
+
+        foreach ($lessons as $k=>$v){
+            echo $v->cost();
+            echo '<br/>';
+        }
     }
 
     public function actionTest()

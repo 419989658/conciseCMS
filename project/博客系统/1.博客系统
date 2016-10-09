@@ -1,0 +1,130 @@
+===================================================================================================
+//用户表
+===================================================================================================
+blog_user{
+    id    int(11)              用户id
+    username    varchar(40)         用户名
+    password    varchar(32)         用户密码
+    email       varchar(60)         email
+    type        tinyint(2)          是否为管理员  0普通用户 1管理员
+    login_ip    varchar(15)         登陆IP
+    status      tinyint(2)          用户状态    0正常 1禁止 2删除
+    login_time  int(11)             登陆时间
+    created_at  int(11)             创建时间
+    updated_at  int(11)             修改时间
+}
+---------------------------------------------------------------------------------------------------
+create table blog_user(
+id int(11) unsigned primary key auto_increment not null,
+username varchar(40) not null,
+password varchar(32) not null,
+email varchar(60) not null,
+type tinyint(2) default 0,
+status tinyint(2) unsigned default 0,
+login_ip varchar(15) default '127.0.0.1',
+login_time int(11) unsigned default null,
+created_at int(11) unsigned not null,
+updated_at int(11) unsigned not null
+) ENGINE=MyISAM default character set utf8;
+
+
+===================================================================================================
+//栏目表
+===================================================================================================
+blog_channel{
+    cid          int(11)            栏目ID
+    ctitle        varchar(60)        栏目标题
+    is_show      tinyint(2)         是否公用 0公用 1私有
+
+}
+---------------------------------------------------------------------------------------------------
+create table blog_channel(
+    cid int(11) unsigned primary key auto_increment,
+    ctitle varchar(60) not null,
+    is_show tinyint(2) unsigned not null default 0
+) ENGINE=MyISAM default character set utf8;
+
+
+===================================================================================================
+//文章表
+===================================================================================================
+blog_article{
+    aid          int(11)            文章ID
+    atitle       varchar(60)        文章标题
+    content      text,              文章内容
+    status       tinyint(2)         文章状态 0正常 1禁用   2删除
+    is_show      tinyint(2)         是否公开 0公用 1私有
+    cid          int(11)            栏目目录
+}
+---------------------------------------------------------------------------------------------------
+create table blog_article(
+    aid int(11) unsigned primary key auto_increment,
+    ctitle varchar(60) not null,
+    content text,
+    status tinyint(2)  unsigned default 0,
+    is_show tinyint(2) unsigned default 0,
+    cid int(11) unsigned,
+    created_at int(11) unsigned,
+    updated_at int(11) unsigned
+)ENGINE=MyISAM default character set utf8;
+
+
+
+===================================================================================================
+//留言表
+===================================================================================================
+create table blog_note{
+    nid         int(11)         留言ID
+    uid         int(11)         用户ID
+    wpic        varchar(200)    留言的图标
+    status      tinyint(2)      留言状态       0所有人可见  1 仅博主可见
+    reply       tinyint(2)      是否已经回复    0已回复     1 未回复
+    created_at  int(11)         留言时间
+}
+---------------------------------------------------------------------------------------------------
+create table blog_note(
+    nid int(11) unsigned primary key auto_increment,
+    uid int(11) unsigned,
+    wpic varchar(200),
+    status tinyint(2) default 0,
+    reply tinyint(2) default 1,
+    created_at int(11) unsigned
+)ENGINE=MyISAM default character set utf8;
+
+
+===================================================================================================
+//回复表
+===================================================================================================
+
+blog_reply{
+    rid   int(11)           回复ID
+    nid   int(11)           留言ID
+    reply_content text      回复内容
+    created_at  int(11)     回复时间
+}
+---------------------------------------------------------------------------------------------------
+create table blog_reply(
+    rid int(11) unsigned primary key auto_increment,
+    nid int(11) unsigned,
+    reply_content text,
+    created_at int(11) unsigned
+)ENGINE=MyISAM default character set utf8;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
