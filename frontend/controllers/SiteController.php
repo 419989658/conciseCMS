@@ -8,6 +8,7 @@ use common\component\Seminar;
 use common\component\TimedCostStrategy;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;

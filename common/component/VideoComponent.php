@@ -32,21 +32,23 @@ class VideoComponent
      */
     public function getVideoModel()
     {
-         return  new VideoInfo();
+        return new VideoInfo();
     }
+
     /**
      * 上传电影相关文件
      * @param array $models getVideoModel返回的数组，分别为 封面图片，缩略图，视频文件的上传模型
      * @return array
      */
-    public function upload($videoModel,$uploadModel){
+    public function upload($videoModel, $uploadModel)
+    {
         $uploadStatus = true;
 
-        $uploadModel->videoFile = UploadedFile::getInstance($uploadModel,'videoFile');
-        $uploadModel->coverImg = UploadedFile::getInstance($uploadModel,'coverImg');
-        $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel,'thumbImg');
+        $uploadModel->videoFile = UploadedFile::getInstance($uploadModel, 'videoFile');
+        $uploadModel->coverImg = UploadedFile::getInstance($uploadModel, 'coverImg');
+        $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel, 'thumbImg');
 
-        if($uploadFiles = $uploadModel->upload()){
+        if ($uploadFiles = $uploadModel->upload()) {
             //记录三张图片的URL地址
             $videoModel->cover_img = $uploadFiles[UploadConfig::TYPE_COVER];
             $videoModel->thumb_img = $uploadFiles[UploadConfig::TYPE_THUMB];
@@ -55,9 +57,9 @@ class VideoComponent
             $videoModel->name = $uploadModel->videoFile->baseName;
         }
 
-        if($uploadStatus){
-           return $videoModel;
-        }else{
+        if ($uploadStatus) {
+            return $videoModel;
+        } else {
             //TODO上传失败后的处理
         }
 
