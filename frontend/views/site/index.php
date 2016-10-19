@@ -5,9 +5,6 @@
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-
-    <a style="width:80px;height:80px;background:lightgreen;">我的concise</a><br/>
-    <a style="width:80px;height:80px;background:lightgreen;padding:0 49px;box-sizing: border-box">我的concise</a>
     <div class="jumbotron">
         <h1>Congratulations!</h1>
 
