@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\component\VideoComponent;
+use common\component\WebUploadProcess;
 use Yii;
 use common\models\model\VideoInfo;
 use common\models\query\VideoInfoQuery;
@@ -65,6 +66,8 @@ class VideoController extends Controller
         $videoModel = $videoCpt->getVideoModel();
         $uploadModel = $videoCpt->getVideoUpload();
         if(Yii::$app->request->isPost){
+            $upload = new WebUploadProcess();
+            $upload->init();
             $videoModel = $videoCpt->upload($videoModel,$uploadModel);
             if($videoModel->load(Yii::$app->request->post()) && $videoModel->save()){
               //  echo $videoModel->id;die;
@@ -78,6 +81,7 @@ class VideoController extends Controller
                 'uploadModel'=>$uploadModel,
             ]);
     }
+
 
     /**
      * Updates an existing VideoInfo model.

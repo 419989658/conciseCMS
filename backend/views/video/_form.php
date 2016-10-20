@@ -7,10 +7,9 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\model\VideoInfo */
 /* @var $uploadModel backend\models\ImageUpload */
 /* @var $form yii\widgets\ActiveForm */
+\backend\assets\WebUploaderAsset::register($this);
 ?>
-
 <div class="video-info-form">
-
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <?php //echo $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
 
@@ -30,12 +29,51 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($uploadModel, 'videoFile')->fileInput(['multiple' => true, 'accept' => 'media/*'])->label('视频文件') ?>
 
+    <div id="uploader" class="wu-example">
+        <!--用来存放文件信息-->
+        <div id="thelist" class="uploader-list"></div>
+        <div class="btns">
+            <div id="picker">选择文件</div>
+            <button id="ctlBtn1" class="btn btn-default">开始上传</button>
+        </div>
+    </div>
+
     <?= $form->field($model, 'status')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['id'=>'ctlBtn','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$this->registerJs("
+var 
+    BASE_URL='',
+    UPLOAD_SERVICE = '".\yii\helpers\Url::to()."';
+
+
+
+
+",\yii\web\View::POS_BEGIN);
+?>
+<?php  ?>
+<?php JsBlock::begin() ?>
+<script>
+    $(function () {
+        jQuery('form#apitool').on('beforeSubmit', function (e) {
+            var $form = $(this);
+            $.ajax({
+                url: $form.attr('action'),
+                type: 'post',
+                data: $form.serialize(),
+                success: function (data) {
+                    // do something
+                }
+            });
+        }).on('submit', function (e) {
+            e.preventDefault();
+        });
+</script>
+<?php JsBlock::end() ?>
