@@ -3,7 +3,8 @@
 namespace backend\controllers;
 
 use common\component\VideoComponent;
-use common\component\WebUploadProcess;
+use common\component\WebUploader1;
+use common\component\WebUploader_3;
 use Yii;
 use common\models\model\VideoInfo;
 use common\models\query\VideoInfoQuery;
@@ -16,6 +17,7 @@ use yii\filters\VerbFilter;
  */
 class VideoController extends Controller
 {
+    public $enableCsrfValidation = false;
     public function behaviors()
     {
         return [
@@ -66,8 +68,6 @@ class VideoController extends Controller
         $videoModel = $videoCpt->getVideoModel();
         $uploadModel = $videoCpt->getVideoUpload();
         if(Yii::$app->request->isPost){
-            $upload = new WebUploadProcess();
-            $upload->init();
             $videoModel = $videoCpt->upload($videoModel,$uploadModel);
             if($videoModel->load(Yii::$app->request->post()) && $videoModel->save()){
               //  echo $videoModel->id;die;
@@ -82,6 +82,17 @@ class VideoController extends Controller
             ]);
     }
 
+
+    public function actionUploadVideo()
+    {
+        return $this->render('upload-video');
+    }
+    public function actionProgressVideo()
+    {
+        if(Yii::$app->request->isPost){
+            WebUploader_3::init($_POST,$_FILES)->progress();
+        }
+    }
 
     /**
      * Updates an existing VideoInfo model.

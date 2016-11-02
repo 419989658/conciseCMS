@@ -10,7 +10,10 @@ use yii\widgets\ActiveForm;
 \backend\assets\WebUploaderAsset::register($this);
 ?>
 <div class="video-info-form">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'enableAjaxValidation' => true,
+    ]); ?>
     <?php //echo $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
 
     <?= $form->field($model, 'actor_id')->textInput() ?>
@@ -51,29 +54,8 @@ use yii\widgets\ActiveForm;
 $this->registerJs("
 var 
     BASE_URL='',
-    UPLOAD_SERVICE = '".\yii\helpers\Url::to()."';
-
-
+    CHECK_CHUNK_SERVICE = UPLOAD_SERVICE = '".\yii\helpers\Url::toRoute(['progress-video'])."';
 
 
 ",\yii\web\View::POS_BEGIN);
 ?>
-<?php  ?>
-<?php JsBlock::begin() ?>
-<script>
-    $(function () {
-        jQuery('form#apitool').on('beforeSubmit', function (e) {
-            var $form = $(this);
-            $.ajax({
-                url: $form.attr('action'),
-                type: 'post',
-                data: $form.serialize(),
-                success: function (data) {
-                    // do something
-                }
-            });
-        }).on('submit', function (e) {
-            e.preventDefault();
-        });
-</script>
-<?php JsBlock::end() ?>

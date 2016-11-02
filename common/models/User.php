@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\VarDumper;
 use yii\web\IdentityInterface;
 
 /**
@@ -25,7 +26,6 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
 
     /**
      * @inheritdoc
@@ -51,8 +51,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['username','email','password_hash'],'required'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
 
@@ -185,5 +185,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+    public function updateData($postData)
+    {
+        //VarDumper::dump($postData,10,1);die;
+        $newPassword = $postData['User']['password_hash'];
+        if ($newPassword == $this->password_hash){
+            unset($postData->password_hash);
+        }
+        return $this->load($postData);
+
     }
 }

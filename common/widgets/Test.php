@@ -8,7 +8,9 @@
 namespace common\widgets;
 
 
+use common\models\BookLogic;
 use yii\base\Widget;
+use yii\data\ArrayDataProvider;
 
 class Test extends Widget
 {
@@ -23,6 +25,15 @@ class Test extends Widget
 
     public function run()
     {
-        return "<h1>第一个{$this->mes}</h1>";
+        $dataProvider = new ArrayDataProvider([
+            'allModels'=>BookLogic::data(),
+            'pagination'=>[
+                'pageSize'=>5,
+                'page'=>0,
+            ],
+        ]);
+        return $this->render('index',[
+            'dataProvider'=>$dataProvider,
+        ]);
     }
 }
