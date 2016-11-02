@@ -3,51 +3,194 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+$this->params['breadcrumbs'][] = ['label' => '后台界面', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+    <div class="row">
+        <div class="col-md-3 ">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            管理员信息
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled">
+                                <li><span class="glyphicon glyphicon-user"></span> 亲爱的
+                                    <small> <?= Yii::$app->getUser()->identity->username; ?></small>
+                                </li>
+                                <li><span class="glyphicon glyphicon-user"></span> 现在是:
+                                    <small>2016年10月31日 18:31</small>
+                                </li>
+                                <li><span class="glyphicon glyphicon-user"></span> 太阳不错，到处看看吧</li>
+                                <li><span class="glyphicon glyphicon-user"></span> 上一次登陆：
+                                    <small>2016年09月28日</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            最新动态
+                            <a href="###" class="pull-right"> 更多<span class="glyphicon glyphicon-cog"></span></a>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled">
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                                <li><a href="">不知道填充什么好</a> <span class="pull-right">2016-02-13</span></li>
+                            </ul>
+                        </div>
+                    </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                </div>
             </div>
         </div>
-
+        <div class="col-md-9">
+            <div id="myCarousel" class="carousel slide">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="images/test1.jpg" alt="First slide" class="img-responsive img-thumbnail">
+                    </div>
+                    <div class="item">
+                        <img src="images/test2.jpg" alt="Second slide" class="img-responsive img-thumbnail">
+                    </div>
+                    <div class="item">
+                        <img src="images/test3.jpg" alt="Third slide" class="img-responsive img-thumbnail">
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel"
+                   data-slide="prev">&lsaquo;
+                </a>
+                <a class="carousel-control right" href="#myCarousel"
+                   data-slide="next">&rsaquo;
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    空闲1
+                </div>
+                <div class="panel-body">
+                    预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    空闲1
+                </div>
+                <div class="panel-body">
+                    预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    空闲1
+                </div>
+                <div class="panel-body">
+                    预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    空闲1
+                </div>
+                <div class="panel-body">
+                    预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    空闲1
+                </div>
+                <div class="panel-body">
+                    预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    空闲1
+                </div>
+                <div class="panel-body">
+                    预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                    预留
+                </div>
+            </div>
+        </div>
     </div>
 </div>

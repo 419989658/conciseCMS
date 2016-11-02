@@ -28,15 +28,14 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => '简约CMS',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => '用户管理','url' => ['/user-manager/index']],
+        ['label' => '后台管理中心', 'url' => ['/site/index']],
         ['label' => '标签管理', 'url' => ['/tags/index']],
         ['label' => '视频管理', 'url' => ['/video/index']],
     ];

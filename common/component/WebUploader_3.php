@@ -22,7 +22,7 @@ class WebUploader_3
     const STATUS_UNKNOWN = 'unknown';       //未知状态
 
     const FLAG_REMOVE_CHUNK = true; //是否删除分片文件
-    const TMP_CHUNK_MAX_AGE = 5*3600; //分片文件最大生存时间
+    const TMP_CHUNK_MAX_AGE = 36000; //分片文件最大生存时间
 
     private $hashMD5; // 文件MD5
     private $chunkFileDir;

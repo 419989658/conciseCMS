@@ -1,66 +1,21 @@
 <?php
-
-use yii\helpers\Html;
-use yii\grid\GridView;
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\TagsSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-$ajax_url = \yii\helpers\Url::to(['ajax-view']);
-$csrf_param = Yii::$app->request->csrfParam;
-$csrf_token = Yii::$app->request->csrfToken;
-
-$this->registerJs("
-    $('div.tags-index').on('click','tr',function(){
-        var id = $(this).data('key');
-        $.ajax({
-            'type' : 'GET',
-            'url'  : '$ajax_url',
-            'dataType' : 'html',
-            'data':{
-                '$csrf_param' : '$csrf_token',
-                'id' : id
-            },
-            'success' : function(data){
-            $('#tags-detail').html(data);
-            }
-        });
-    })
-
-");
-
-
-$this->title = 'Tags';
+/**
+ * User: sometimes
+ * Date: 2016/10/31
+ * Time: 19:55
+ */
+$this->title='标签管理';
 $this->params['breadcrumbs'][] = $this->title;
+use \backend\assets\TagsAsset;
+use \yii\bootstrap\Html;
+
+TagsAsset::register($this);
 ?>
-<div class="tags-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Tags', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?php \yii\widgets\Pjax::begin();?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'tag',
-        //    'meta_description',
-        //    'tag_img',
-        //    'created_at',
-          //   'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-    <?php \yii\widgets\Pjax::end();?>
-</div>
-
-<div id="tags-detail">
-    <?php echo $this->render('_view',['model'=>$tags]) ?>
+<div class="tags-control">
+    <?=  Html::a('提交修改的标签',\yii\helpers\Url::toRoute(['tags/create']),['class'=>'btn btn-primary','id'=>'submitKeys']) ?>
+        <div class="row">
+            <h1>已有标签 <small class="text-danger">点击提交按钮才会保存</small></h1>
+            <input id="tagKeys" type="text" class="tags" value="foo,bar,baz,roffle" />
+        </div>
 </div>

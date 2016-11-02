@@ -44,7 +44,6 @@ class VideoComponent
     {
         $uploadStatus = true;
 
-        $uploadModel->videoFile = UploadedFile::getInstance($uploadModel, 'videoFile');
         $uploadModel->coverImg = UploadedFile::getInstance($uploadModel, 'coverImg');
         $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel, 'thumbImg');
 
@@ -52,9 +51,8 @@ class VideoComponent
             //记录三张图片的URL地址
             $videoModel->cover_img = $uploadFiles[UploadConfig::TYPE_COVER];
             $videoModel->thumb_img = $uploadFiles[UploadConfig::TYPE_THUMB];
-            $videoModel->origin_url = $uploadFiles[UploadConfig::TYPE_VIDEO];
             //记录视频文件的名称
-            $videoModel->name = $uploadModel->videoFile->baseName;
+            $videoModel->name = '';
         }
 
         if ($uploadStatus) {

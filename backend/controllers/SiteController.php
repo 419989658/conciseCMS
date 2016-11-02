@@ -4,6 +4,7 @@ namespace backend\controllers;
 use common\models\BookLogic;
 use common\widgets\Test;
 use Yii;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -62,8 +63,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        echo Test::widget();
-        //return $this->render('index');
+        return $this->render('index');
     }
 
     /**

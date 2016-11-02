@@ -132,7 +132,8 @@ jQuery(function() {
 
     uploader.on( 'uploadSuccess', function( file ,reason) {
         $( '#'+file.id ).find('p.state').text('已上传');
-        $("#videoinfo-actor_id").val(reason.result);
+        $("#videoinfo-origin_url").val(reason.result);
+        $("#uploader").remove();
     });
 
     uploader.on( 'uploadError', function( file,reason ) {

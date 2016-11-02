@@ -14,7 +14,6 @@ use yii\helpers\VarDumper;
 
 class VideoUpload extends Model
 {
-    public $videoFile;//视频文件 ->对应数据库中的 play_url
     public $coverImg;//封面图片  ->对应数据表中的 cover_img
     public $thumbImg;//缩略图    ->对应数据库中的 thumb_img
 
@@ -23,14 +22,12 @@ class VideoUpload extends Model
         return [
             UploadConfig::TYPE_COVER => 'coverImg',
             UploadConfig::TYPE_THUMB => 'thumbImg',
-            UploadConfig::TYPE_VIDEO => 'videoFile',
         ];
     }
     public function rules()
     {
         return [
-            [['videoFile'], 'file', 'skipOnEmpty' => true, /*'extensions' => ['mp4', 'avi', 'flv', 'rm']*/],
-            [['coverImg','videoFile'], 'file', 'skipOnEmpty' => false, /*'extensions' => 'jpg,png'*/],
+            [['coverImg','thumbImg'], 'file', 'skipOnEmpty' => false, 'extensions' => 'jpg,png'],
         ];
     }
 
@@ -43,15 +40,12 @@ class VideoUpload extends Model
     {
         file_exists(UploadConfig::COVER_IMG_PATH) ?: FileHelper::createDirectory(UploadConfig::COVER_IMG_PATH);
         file_exists(UploadConfig::THUMB_IMG_PATH) ?: FileHelper::createDirectory(UploadConfig::THUMB_IMG_PATH);
-        file_exists(UploadConfig::PLAY_VIDEO_PATH) ?: FileHelper::createDirectory(UploadConfig::PLAY_VIDEO_PATH);
-        file_exists(UploadConfig::ORIGIN_VIDEO_PATH) ?: FileHelper::createDirectory(UploadConfig::ORIGIN_VIDEO_PATH);
 
         if ($this->validate()) {
             $uploadFiles = [];
             $baseName = date('YmdHis') . '_' . rand(111, 999) . '_';
             $uploadFiles[UploadConfig::TYPE_COVER] = $baseName . md5($this->coverImg->baseName) . '.' . $this->coverImg->extension;
             $uploadFiles[UploadConfig::TYPE_THUMB] = $baseName . md5($this->thumbImg->baseName) . '.' . $this->thumbImg->extension;
-            $uploadFiles[UploadConfig::TYPE_VIDEO] = $baseName . md5($this->videoFile->baseName) . '.' . $this->videoFile->extension;
 
             $videoUploadPath = UploadConfig::enumVideoUploadPath();
             $videoProperty = $this->enumVideoProperty();

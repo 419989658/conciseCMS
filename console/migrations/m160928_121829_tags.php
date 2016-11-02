@@ -15,10 +15,6 @@ class m160928_121829_tags extends Migration
         $this->createTable($this->tableName,[
             'id'=>$this->primaryKey(),
             'tag'=>$this->string()->notNull(), //标签名
-            'meta_description'=>$this->string(),
-            'tag_img'=>$this->string(),
-            'created_at'=>$this->integer()->notNull(),
-            'updated_at'=>$this->integer()->notNull(),
         ],$tableOptions);
     }
 

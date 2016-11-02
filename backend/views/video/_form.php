@@ -16,22 +16,21 @@ use yii\widgets\ActiveForm;
     ]); ?>
     <?php //echo $form->field($model, 'name')->textInput(['maxlength' => true]); ?>
 
-    <?= $form->field($model, 'actor_id')->textInput() ?>
+    <?= $form->field($model, 'actor_id')->textInput(['style'=>'max-width:150px']) ?>
 
-    <?= $form->field($model, 'tag_id')->textInput() ?>
+    <?= $form->field($model, 'tag_id')->textInput(['style'=>'max-width:150px']) ?>
 
-    <?= $form->field($model, 'album_id')->textInput() ?>
+    <?= $form->field($model, 'album_id')->textInput(['style'=>'max-width:150px']) ?>
 
-    <?= $form->field($model, 'issue_date')->textInput() ?>
+    <?= $form->field($model, 'issue_date')->textInput(['style'=>'max-width:150px']) ?>
 
-    <?= $form->field($model, 'play_time')->textInput() ?>
+    <?= $form->field($model, 'play_time')->textInput(['style'=>'max-width:150px']) ?>
 
     <?= $form->field($uploadModel, 'coverImg')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('封面图片') ?>
 
     <?= $form->field($uploadModel, 'thumbImg')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('缩略图片') ?>
 
-    <?= $form->field($uploadModel, 'videoFile')->fileInput(['multiple' => true, 'accept' => 'media/*'])->label('视频文件') ?>
-
+    <?= $form->field($model,'origin_url')->textInput(['readonly'=>'readonly','style'=>'max-width:150px']) ?>
     <div id="uploader" class="wu-example">
         <!--用来存放文件信息-->
         <div id="thelist" class="uploader-list"></div>

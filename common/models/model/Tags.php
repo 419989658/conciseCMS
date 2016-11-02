@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace common\models\model;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -25,12 +25,6 @@ class Tags extends \yii\db\ActiveRecord
         return '{{%tags}}';
     }
 
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className()
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -39,7 +33,7 @@ class Tags extends \yii\db\ActiveRecord
     {
         return [
             [['tag'], 'required'],
-            [['tag', 'meta_description', 'tag_img'], 'string', 'max' => 255],
+            [['tag'], 'string', 'max' => 255],
         ];
     }
 
@@ -51,15 +45,15 @@ class Tags extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'tag' => 'Tag',
-            'meta_description' => 'Meta Description',
-            'tag_img' => 'Tag Img',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
         ];
     }
     public function getPost(){
         return $this->hasMany(Posts::className(),['id'=>'post_id'])
             ->viaTable(PostTagPivot::tableName(),['tag_id'=>'id'])
             ->where(['status'=>1]);
+    }
+    public function getVideo()
+    {
+        //return $this->hasMany()
     }
 }
