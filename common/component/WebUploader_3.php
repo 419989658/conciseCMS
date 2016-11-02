@@ -183,14 +183,14 @@ class WebUploader_3
                     }
                     @fclose($in);
                     //删除当前分片
-                    @unlink("{$chunkFilePath}_{$index}.part");
+                 //   @unlink("{$chunkFilePath}_{$index}.part");
                 }
                 flock($out, LOCK_UN);
             }
             @fclose($out);
             @rmdir($this->chunkFileDir);        //删除分片文件夹
         // Return Success JSON-RPC response
-        die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+        die('{"jsonrpc" : "2.0", "result" : "'.addslashes($filePath).'", "id" : "id"}');
     }
 
     /**

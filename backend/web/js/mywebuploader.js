@@ -100,8 +100,8 @@ jQuery(function() {
             console.log(ret);
             console.log(end-start);
             $li.find('p.state').text('文件的MD5值计算完毕,用时:'+((end - start)/1000).toFixed(1) + '秒');
-            $( '#'+file.id ).find('.progress').fadeOut();
-           // $li.find('.progress .progress-bar').css( 'width', 0+ '%' );
+            $( '#'+file.id ).find('.progress').fadeOut(1);
+            $li.find('.progress .progress-bar').css( 'width', 0+ '%' );
             fileMd5 = ret;
             file.fileMd5 = ret;
             console.log(file);
@@ -132,8 +132,7 @@ jQuery(function() {
 
     uploader.on( 'uploadSuccess', function( file ,reason) {
         $( '#'+file.id ).find('p.state').text('已上传');
-        console.log(file);
-        console.log(reason);
+        $("#videoinfo-actor_id").val(reason.result);
     });
 
     uploader.on( 'uploadError', function( file,reason ) {

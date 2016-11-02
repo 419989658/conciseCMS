@@ -85,14 +85,11 @@ class VideoController extends Controller
 
     public function actionUploadVideo()
     {
-        return $this->render('upload-video');
-    }
-    public function actionProgressVideo()
-    {
         if(Yii::$app->request->isPost){
             WebUploader_3::init($_POST,$_FILES)->progress();
         }
     }
+
 
     /**
      * Updates an existing VideoInfo model.

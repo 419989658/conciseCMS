@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
 $this->registerJs("
 var 
     BASE_URL='',
-    CHECK_CHUNK_SERVICE = UPLOAD_SERVICE = '".\yii\helpers\Url::toRoute(['progress-video'])."';
+    CHECK_CHUNK_SERVICE = UPLOAD_SERVICE = '".\yii\helpers\Url::toRoute(['upload-video'])."';
 
 
 ",\yii\web\View::POS_BEGIN);
