@@ -2,15 +2,18 @@
 
 namespace backend\controllers;
 
+use backend\models\VideoUpload;
 use common\component\VideoComponent;
 use common\component\WebUploader1;
 use common\component\WebUploader_3;
 use Yii;
 use common\models\model\VideoInfo;
 use common\models\query\VideoInfoQuery;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * VideoController implements the CRUD actions for VideoInfo model.
@@ -18,6 +21,24 @@ use yii\filters\VerbFilter;
 class VideoController extends Controller
 {
     public $enableCsrfValidation = false;
+    public function actions()
+    {
+        return [
+            'crop'=>[
+                'class' => 'hyii2\avatar\CropAction',
+                'config'=>[
+                    'bigImageWidth' => '200',     //大图默认宽度
+                    'bigImageHeight' => '200',    //大图默认高度
+                    'middleImageWidth'=> '100',   //中图默认宽度
+                    'middleImageHeight'=> '100',  //中图图默认高度
+                    'smallImageWidth' => '50',    //小图默认宽度
+                    'smallImageHeight' => '50',   //小图默认高度
+                    //头像上传目录（注：目录前不能加"/"）
+                    'uploadPath' => 'uploads/avatar',
+                ]
+            ]
+        ];
+    }
     public function behaviors()
     {
         return [
@@ -64,24 +85,23 @@ class VideoController extends Controller
      */
     public function actionCreate()
     {
-        $videoCpt =  new VideoComponent();
-        $videoModel = $videoCpt->getVideoModel();
-        $uploadModel = $videoCpt->getVideoUpload();
-        if(Yii::$app->request->isPost){
-            $videoModel = $videoCpt->upload($videoModel,$uploadModel);
-            if($videoModel->load(Yii::$app->request->post()) && $videoModel->save()){
-              //  echo $videoModel->id;die;
-                return $this->redirect(['view','id'=>$videoModel->id]);
-            }else{
-                //TODO 保存数据库失败的处理
+        $videoModel = new VideoInfo();
+        $uploadModel = new VideoUpload();
+        if($videoModel->load(Yii::$app->request->post())){
+            $uploadModel->coverImg = UploadedFile::getInstance($uploadModel,'coverImg');
+            $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel,'thumbImg');
+
+            if(!$uploadModel->upload($videoModel)){
+                Yii::$app->session->setFlash('danger','上传错误');
             }
+            $videoModel->save();
+            return $this->redirect(['view','id'=>$videoModel->id,]);
         }
             return $this->render('create', [
                 'model' => $videoModel,
                 'uploadModel'=>$uploadModel,
             ]);
     }
-
 
     public function actionUploadVideo()
     {
@@ -99,15 +119,22 @@ class VideoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $videoModel = $this->findModel($id);
+        $uploadModel = new VideoUpload();
+        if($videoModel->load(Yii::$app->request->post())){
+            $uploadModel->coverImg = UploadedFile::getInstance($uploadModel,'coverImg');
+            $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel,'thumbImg');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if(!$uploadModel->upload($videoModel)){
+                Yii::$app->session->setFlash('danger','上传错误');
+            }
+            $videoModel->save();
+            return $this->redirect(['view','id'=>$videoModel->id,]);
         }
+        return $this->render('update', [
+            'model' => $videoModel,
+            'uploadModel'=>$uploadModel,
+        ]);
     }
 
     /**

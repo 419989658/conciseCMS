@@ -20,6 +20,13 @@ return [
                 ],
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'itemTable' => 't_auth_item',
+            'assignmentTable' => 't_auth_assignment',
+            'itemChildTable' => 't_auth_item_child',
+            'ruleTable'=>'t_auth_rule'
+        ],
     ],
     'params' => $params,
 ];

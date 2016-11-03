@@ -15,13 +15,15 @@ class m130524_201442_init extends Migration
 
         $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull()->unique(),
-            'auth_key' => $this->string(32)->notNull(),
+            'username' => $this->string()->notNull()->unique(),                 //用户名
+            'auth_key' => $this->string(32)->notNull(),                         //验证KEY
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
-            'email' => $this->string()->notNull()->unique(),
+            'email' => $this->string()->notNull()->unique(),    //用户email
+            'role'=>$this->smallInteger(6)->notNull()->defaultValue('0'),       //角色等级
+            'user_img' =>$this->string(255),                                     //用户头像
 
-            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),      //用户状态
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);

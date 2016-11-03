@@ -3,11 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use \backend\models\UploadConfig;
+use \backend\models\VideoUpload;
+use \common\models\model\VideoInfo;
 /* @var $this yii\web\View */
 /* @var $model common\models\model\VideoInfo */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Video Infos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '视频信息', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="video-info-view">
@@ -33,25 +35,32 @@ $this->params['breadcrumbs'][] = $this->title;
             'actor_id',
             'tag_id',
             'album_id',
-            'issue_date',
-            'play_time:datetime',
+            'issue_date:datetime',
+            'play_time',
             [
                 'label'=>'封面图片',
-                'value'=> UploadConfig::COVER_IMG_PATH.$model->cover_img,
+                'value'=> VideoUpload::COVER_IMG_PATH.$model->cover_img,
                 //'format' => ['image',['width'=>'40','height'=>'30',]],
                 'format' => ['image'],
             ],
             [
                 'label'=>'缩略图',
-                'value'=> UploadConfig::COVER_IMG_PATH.$model->thumb_img,
+                'value'=> VideoUpload::THUMB_IMG_PATH.$model->thumb_img,
                 //'format' => ['image',['width'=>'40','height'=>'30',]],
                 'format' => ['image'],
             ],
-            'origin_url:url',
+            [
+                'label'=>'视频原始播放地址',
+                'value'=>Yii::$app->params['videoService'].$model->origin_url,
+                'format'=>'url',
+            ],
             'play_url:url',
-            'status',
-            'created_at',
-            'updated_at',
+            [
+                'label'=>'状态',
+                'value'=>VideoInfo::getStatus($model->status),
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

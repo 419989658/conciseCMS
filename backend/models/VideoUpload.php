@@ -8,56 +8,101 @@
 namespace backend\models;
 
 
+use common\models\model\VideoInfo;
 use yii\base\Model;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
+use yii\web\UploadedFile;
 
 class VideoUpload extends Model
 {
     public $coverImg;//封面图片  ->对应数据表中的 cover_img
     public $thumbImg;//缩略图    ->对应数据库中的 thumb_img
 
-    private  function enumVideoProperty()
+    //视频
+    const ORIGIN_VIDEO_PATH = 'upload/video/origin/';   //原始视频文件
+    const PLAY_VIDEO_PATH = 'upload/video/play/';       //可播放视频文件夹（经过转码后的视频）
+
+    //图片
+    const COVER_IMG_PATH = 'upload/cover/';             //封面图片目录
+    const THUMB_IMG_PATH = 'upload/thumb/';             //缩略图片目录
+
+    //枚举视频上传图片路径
+    public static function  enumVideoUploadPath()
     {
         return [
-            UploadConfig::TYPE_COVER => 'coverImg',
-            UploadConfig::TYPE_THUMB => 'thumbImg',
+            self::TYPE_COVER=>self::COVER_IMG_PATH,
+            self::TYPE_THUMB=>self::THUMB_IMG_PATH,
+        ];
+    }
+
+    const TYPE_COVER = 'cover';
+    const TYPE_THUMB = 'thumb';
+
+    private  static function enumVideoProperty()
+    {
+        return [
+            self::TYPE_COVER => 'coverImg',
+            self::TYPE_THUMB => 'thumbImg',
         ];
     }
     public function rules()
     {
         return [
-            [['coverImg','thumbImg'], 'file', 'skipOnEmpty' => false, 'extensions' => 'jpg,png'],
+            [['coverImg','thumbImg'], 'file'],
         ];
     }
 
-    /**
-     * 视频存放位置
-     * @param string $filePath 指定图片存放在何处，such as: path/to/image/,Note that:最后需要加上一个 /符号，表示存放目录
-     * @return bool | array 上传成功返回文件的名字集合,上传失败返回false
-     */
-    public function upload()
+
+    public function upload($videoModel)
     {
-        file_exists(UploadConfig::COVER_IMG_PATH) ?: FileHelper::createDirectory(UploadConfig::COVER_IMG_PATH);
-        file_exists(UploadConfig::THUMB_IMG_PATH) ?: FileHelper::createDirectory(UploadConfig::THUMB_IMG_PATH);
-
+        $status = true;
         if ($this->validate()) {
+            file_exists(self::COVER_IMG_PATH) ?: FileHelper::createDirectory(self::COVER_IMG_PATH);
+            file_exists(self::THUMB_IMG_PATH) ?: FileHelper::createDirectory(self::THUMB_IMG_PATH);
             $uploadFiles = [];
-            $baseName = date('YmdHis') . '_' . rand(111, 999) . '_';
-            $uploadFiles[UploadConfig::TYPE_COVER] = $baseName . md5($this->coverImg->baseName) . '.' . $this->coverImg->extension;
-            $uploadFiles[UploadConfig::TYPE_THUMB] = $baseName . md5($this->thumbImg->baseName) . '.' . $this->thumbImg->extension;
+            $baseName = date('YmdHis') . '_' . rand(111, 999) ;
+            //保存上传文件列表
+            $coverEx = explode('.',$this->coverImg->name);
+            $thumbEx = explode('.',$this->thumbImg->name);
+            $uploadFiles[self::TYPE_COVER] = $baseName . '_' . md5($this->coverImg->name).'.'.end($coverEx);
+            $uploadFiles[self::TYPE_THUMB] = $baseName . '_' . md5($this->thumbImg->name).'.'.end($thumbEx);
 
-            $videoUploadPath = UploadConfig::enumVideoUploadPath();
-            $videoProperty = $this->enumVideoProperty();
+            $videoUploadPath = self::enumVideoUploadPath();
+            $videoProperty = self::enumVideoProperty();
+
+            //对$coverImg和$thumbImg进行赋值,保存上传文件
             foreach ($uploadFiles as $key => $uploadFile) {
-                $this->$videoProperty[$key]->saveAs($videoUploadPath[$key] . $uploadFile);
+                $status = $this->$videoProperty[$key]->saveAs($videoUploadPath[$key] . $uploadFile);
+                if(!$status){
+                    return false;
+                }
             }
-            return $uploadFiles;
-        } else {
-            //验证失败，TODO
+            //对视频进行赋值
+            $videoModel->cover_img = $uploadFiles[self::TYPE_COVER];
+            $videoModel->thumb_img = $uploadFiles[self::TYPE_THUMB];
+
+            //记录视频文件的名称
+            $videoModel->name = isset($videoModel->name)?$videoModel->name:'未知';
+            $videoModel->status = VideoInfo::STATUS_TRANS;
+            $videoModel->issue_date = \Yii::$app->formatter->asTimestamp($videoModel->issue_date);
+            return $status;
+        }else{
             return false;
         }
     }
 
+    /**
+     * 删除所有文件，在失败回滚的时候使用
+     */
+    public function deleteAllUploadFiles()
+    {
+        if(isset($this->coverImg)) {
+            unlink($this->coverImg);
+        }
+        if(isset($this->thumbImg)) {
+            unlink($this->thumbImg);
+        }
 
+    }
 }

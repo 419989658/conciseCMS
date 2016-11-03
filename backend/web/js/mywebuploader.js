@@ -90,20 +90,24 @@ jQuery(function() {
                     '</div>').appendTo( $li ).find('.progress-bar');
             }
             $li.find('p.state').text('正在计算文件的MD5值');
-            console.log(percentage * 100 + '%');
             $percent.css( 'width', (percentage * 100) + '%' );
         }).then(function(ret){
             //$("#"+file.id).remove();
             //ret为计算后的MD5值
             var end = +new Date();
             $btns.fadeIn();
-            console.log(ret);
-            console.log(end-start);
+            //显示上传按钮
+            $("#ctlBtn1").fadeIn();
             $li.find('p.state').text('文件的MD5值计算完毕,用时:'+((end - start)/1000).toFixed(1) + '秒');
             $( '#'+file.id ).find('.progress').fadeOut(1);
             $li.find('.progress .progress-bar').css( 'width', 0+ '%' );
             fileMd5 = ret;
             file.fileMd5 = ret;
+
+            inputName = $("#videoinfo-name").val();
+            if(inputName.trim() == ''){
+                $("#videoinfo-name").val(file.name);
+            }
             console.log(file);
         });
 

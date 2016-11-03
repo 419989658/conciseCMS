@@ -4,6 +4,7 @@ namespace common\models\model;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%video_info}}".
@@ -24,9 +25,10 @@ use yii\behaviors\TimestampBehavior;
  */
 class VideoInfo extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
+    const STATUS_NORMAL = 0;
+    const STATUS_TRANS = 1;     //转码中
+    const STATUS_FAIL = 2;      //失败
+
     public static function tableName()
     {
         return '{{%video_info}}';
@@ -35,7 +37,16 @@ class VideoInfo extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
+                'value' => function () {
+                    return date('U'); // unix timestamp },
+                }
+            ],
         ];
     }
 
@@ -45,10 +56,10 @@ class VideoInfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'actor_id', 'tag_id', 'album_id'], 'required'],
-            [['actor_id', 'tag_id', 'album_id', 'issue_date', 'play_time', 'status'], 'integer'],
+            [['actor_id', 'tag_id', 'album_id', 'issue_date','origin_url'], 'required'],
+            [['actor_id', 'tag_id', 'album_id', 'play_time', 'status'], 'integer'],
             [['name'], 'string', 'max' => 100],
-            [['cover_img', 'thumb_img', 'play_url','origin_url'], 'string', 'max' => 255]
+            [['cover_img', 'thumb_img', 'play_url', 'origin_url'], 'string', 'max' => 255]
         ];
     }
 
@@ -73,5 +84,28 @@ class VideoInfo extends \yii\db\ActiveRecord
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
         ];
+    }
+
+    public static function enumStatus()
+    {
+        return [
+            self::STATUS_NORMAL => '正常',
+            self::STATUS_TRANS => '转码中',
+            self::STATUS_FAIL => '转码失败'
+        ];
+    }
+
+    public static function getStatus($status)
+    {
+        switch ($status) {
+            case self::STATUS_NORMAL:
+                return '正常';
+            case self::STATUS_TRANS:
+                return '转码中';
+            case self::STATUS_FAIL:
+                return '转码失败';
+            default:
+        }
+        return '未知状态';
     }
 }

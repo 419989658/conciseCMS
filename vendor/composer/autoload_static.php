@@ -23,11 +23,28 @@ class ComposerStaticInitaed39ad1b5103541f523a8477fafa0f1
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
+        'r' => 
+        array (
+            'rmrevin\\yii\\fontawesome\\' => 24,
+        ),
         'k' => 
         array (
             'kartik\\plugins\\fileinput\\' => 25,
             'kartik\\file\\' => 12,
+            'kartik\\datetime\\' => 16,
             'kartik\\base\\' => 12,
+        ),
+        'i' => 
+        array (
+            'iisns\\webuploader\\' => 18,
+        ),
+        'h' => 
+        array (
+            'hyii2\\avatar\\' => 13,
+        ),
+        'd' => 
+        array (
+            'dmstr\\' => 6,
         ),
         'c' => 
         array (
@@ -72,6 +89,10 @@ class ComposerStaticInitaed39ad1b5103541f523a8477fafa0f1
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
+        'rmrevin\\yii\\fontawesome\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rmrevin/yii2-fontawesome',
+        ),
         'kartik\\plugins\\fileinput\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/bootstrap-fileinput',
@@ -80,9 +101,25 @@ class ComposerStaticInitaed39ad1b5103541f523a8477fafa0f1
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-fileinput',
         ),
+        'kartik\\datetime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-datetimepicker',
+        ),
         'kartik\\base\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-krajee-base',
+        ),
+        'iisns\\webuploader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/iisns/yii2-webuploader',
+        ),
+        'hyii2\\avatar\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hyii2/yii2-avatar',
+        ),
+        'dmstr\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dmstr/yii2-adminlte-asset',
         ),
         'cebe\\markdown\\' => 
         array (
@@ -95,6 +132,13 @@ class ComposerStaticInitaed39ad1b5103541f523a8477fafa0f1
     );
 
     public static $prefixesPsr0 = array (
+        'c' => 
+        array (
+            'cebe\\gravatar\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/cebe/yii2-gravatar',
+            ),
+        ),
         'H' => 
         array (
             'HTMLPurifier' => 
