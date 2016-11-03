@@ -20,7 +20,7 @@ return [
                 ],
             ],
         ],
-        'authManager' => [
+        'authManager' => [              //指定权限管理的表
             'class' => 'yii\rbac\DbManager',
             'itemTable' => 't_auth_item',
             'assignmentTable' => 't_auth_assignment',

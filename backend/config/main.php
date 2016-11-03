@@ -12,10 +12,23 @@ return [
     'language'=>'zh-CN',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'admin'=>[
+            'class'=>'mdm\admin\Module',
+        ],
+    ],
+    "aliases" => [
+        "@mdm/admin" => "@vendor/mdmsoft/yii2-admin",
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+        ],
+        //components数组中加入authManager组件,有PhpManager和DbManager两种方式,
+        //PhpManager将权限关系保存在文件里,这里使用的是DbManager方式,将权限关系保存在数据库.
+        "authManager" => [
+            "class" => 'yii\rbac\DbManager', //这里记得用单引号而不是双引号
+            "defaultRoles" => ["guest"],
         ],
         'user' => [
             'identityClass' => 'common\models\model\User',
@@ -68,6 +81,15 @@ return [
             ],
         ],
 
+    ],
+    'as access' => [
+        //ACF肯定是要加的，因为粗心导致该配置漏掉了，很是抱歉
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            //这里是允许访问的action
+            //controller/action
+            '*'
+        ]
     ],
     'params' => $params,
 ];

@@ -27,6 +27,10 @@ class ComposerStaticInitaed39ad1b5103541f523a8477fafa0f1
         array (
             'rmrevin\\yii\\fontawesome\\' => 24,
         ),
+        'm' => 
+        array (
+            'mdm\\admin\\' => 10,
+        ),
         'k' => 
         array (
             'kartik\\plugins\\fileinput\\' => 25,
@@ -92,6 +96,10 @@ class ComposerStaticInitaed39ad1b5103541f523a8477fafa0f1
         'rmrevin\\yii\\fontawesome\\' => 
         array (
             0 => __DIR__ . '/..' . '/rmrevin/yii2-fontawesome',
+        ),
+        'mdm\\admin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
         ),
         'kartik\\plugins\\fileinput\\' => 
         array (
