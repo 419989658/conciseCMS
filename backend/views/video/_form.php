@@ -9,6 +9,8 @@ use kartik\datetime\DateTimePicker;
 /* @var $uploadModel backend\models\ImageUpload */
 /* @var $form yii\widgets\ActiveForm */
 \backend\assets\WebUploaderAsset::register($this);
+$tags = array_combine(array_column($tagsData,'id'),array_column($tagsData,'name'));
+
 ?>
 <div class="video-info-form">
     <?php $form = ActiveForm::begin([
@@ -16,11 +18,28 @@ use kartik\datetime\DateTimePicker;
         //'enableAjaxValidation' => true,
     ]); ?>
 
-    <?= $form->field($model, 'actor_id')->textInput(['style'=>'max-width:230px']) ?>
+    <!-- 修改button.active默认点击样式,此处为标签样式-->
+    <?php $this->registerCss('label.btn-primary.active {background-color: #f86090;border-color: #f04d74;}'); ?>
+    <!-- 标签选择-->
+    <?= $form->field($model,'tags')->checkboxList($tags,[
+        'itemOptions'=>[
+            'style'=>'display:none',
+            'labelOptions'=>[
+                'class'=>'btn btn-primary',
+                'style'=>'margin:4px 4px 12px 4px;',
+                'data-toggle'=>'buttons',
+            ],
 
-    <?= $form->field($model, 'tag_id')->textInput(['style'=>'max-width:230px']) ?>
+        ]])->label('视频标签'); ?>
 
-    <?= $form->field($model, 'album_id')->textInput(['style'=>'max-width:230px']) ?>
+    <!-- 此JS是为了将默认选中的标签反选颜色-->
+    <?php $this->registerJs('$(function(){
+        $("#videoinfo-tags>label").each(function(){
+            if($(this).find("input").attr("checked") == "checked"){
+                $(this).addClass("active");
+            }
+        });
+    })') ?>
 
     <?= $form->field($model, 'issue_date')->widget(DateTimePicker::className(), [
         'options' => ['placeholder' => '','style'=>'max-width:150px'],

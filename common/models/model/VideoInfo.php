@@ -11,7 +11,6 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $name
- * @property integer $actor_id
  * @property integer $tag_id
  * @property integer $album_id
  * @property integer $issue_date
@@ -28,6 +27,8 @@ class VideoInfo extends \yii\db\ActiveRecord
     const STATUS_NORMAL = 0;
     const STATUS_TRANS = 1;     //转码中
     const STATUS_FAIL = 2;      //失败
+
+    public $tags;
 
     public static function tableName()
     {
@@ -56,8 +57,8 @@ class VideoInfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['actor_id', 'tag_id', 'album_id', 'issue_date','origin_url'], 'required'],
-            [['actor_id', 'tag_id', 'album_id', 'play_time', 'status'], 'integer'],
+            [['issue_date','origin_url'], 'required'],
+            [['play_time', 'status'], 'integer'],
             [['name'], 'string', 'max' => 100],
             [['cover_img', 'thumb_img', 'play_url', 'origin_url'], 'string', 'max' => 255]
         ];
@@ -71,9 +72,6 @@ class VideoInfo extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => '电影名称',
-            'actor_id' => '演员表ID',
-            'tag_id' => '标签表ID',
-            'album_id' => '专辑表ID',
             'issue_date' => '发行日期',
             'play_time' => '播放时长',
             'cover_img' => '封面图片',

@@ -6,6 +6,8 @@ use backend\models\VideoUpload;
 use common\component\VideoComponent;
 use common\component\WebUploader1;
 use common\component\WebUploader_3;
+use common\models\model\Tag;
+use common\models\model\Tags;
 use Yii;
 use common\models\model\VideoInfo;
 use common\models\query\VideoInfoQuery;
@@ -87,19 +89,23 @@ class VideoController extends Controller
     {
         $videoModel = new VideoInfo();
         $uploadModel = new VideoUpload();
+        $tagsData = new Tag();
         if($videoModel->load(Yii::$app->request->post())){
+            $tagIds = Yii::$app->request->post('VideoInfo')['tags'];
             $uploadModel->coverImg = UploadedFile::getInstance($uploadModel,'coverImg');
             $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel,'thumbImg');
-
             if(!$uploadModel->upload($videoModel)){
                 Yii::$app->session->setFlash('danger','上传错误');
             }
             $videoModel->save();
+            $videoCpt = new VideoComponent();
+            $videoCpt->batchSaveTags($videoModel->id,$tagIds);
             return $this->redirect(['view','id'=>$videoModel->id,]);
         }
             return $this->render('create', [
                 'model' => $videoModel,
                 'uploadModel'=>$uploadModel,
+                'tagsData'=>$tagsData::find()->asArray()->all(),
             ]);
     }
 
@@ -120,7 +126,12 @@ class VideoController extends Controller
     public function actionUpdate($id)
     {
         $videoModel = $this->findModel($id);
+        $tagsData = new Tag();
         $uploadModel = new VideoUpload();
+        $videoCpt = new VideoComponent();
+        $videoModel->tags = $videoCpt->getTagsByVideoId($id);
+        $videoModel->issue_date = Yii::$app->formatter->AsDatetime($videoModel->issue_date);
+        $uploadModel->canEmpty = true;
         if($videoModel->load(Yii::$app->request->post())){
             $uploadModel->coverImg = UploadedFile::getInstance($uploadModel,'coverImg');
             $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel,'thumbImg');
@@ -134,6 +145,7 @@ class VideoController extends Controller
         return $this->render('update', [
             'model' => $videoModel,
             'uploadModel'=>$uploadModel,
+            'tagsData'=>$tagsData::find()->asArray()->all(),
         ]);
     }
 

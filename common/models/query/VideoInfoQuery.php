@@ -18,7 +18,7 @@ class VideoInfoQuery extends VideoInfo
     public function rules()
     {
         return [
-            [['id', 'actor_id', 'tag_id', 'album_id', 'issue_date', 'play_time', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'issue_date', 'play_time', 'status', 'created_at', 'updated_at'], 'integer'],
             [['name', 'cover_img', 'thumb_img', 'play_url'], 'safe'],
         ];
     }
@@ -57,9 +57,6 @@ class VideoInfoQuery extends VideoInfo
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'actor_id' => $this->actor_id,
-            'tag_id' => $this->tag_id,
-            'album_id' => $this->album_id,
             'issue_date' => $this->issue_date,
             'play_time' => $this->play_time,
             'status' => $this->status,

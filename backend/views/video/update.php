@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'uploadModel'=>$uploadModel,
         'model' => $model,
+        'tagsData'=>$tagsData,
     ]) ?>
 
 </div>

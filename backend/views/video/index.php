@@ -38,9 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'id' => $model['id'],], ['data-pjax' => 0, 'target' => '_blank']);
                 }
             ],
-            'actor_id',
-            'tag_id',
-            'album_id',
             // 'issue_date',
             // 'play_time:datetime',
             // 'cover_img',

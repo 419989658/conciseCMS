@@ -32,9 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'actor_id',
-            'tag_id',
-            'album_id',
             'issue_date:datetime',
             'play_time',
             [

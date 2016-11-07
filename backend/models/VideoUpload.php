@@ -24,8 +24,10 @@ class VideoUpload extends Model
     const PLAY_VIDEO_PATH = 'upload/video/play/';       //可播放视频文件夹（经过转码后的视频）
 
     //图片
-    const COVER_IMG_PATH = 'upload/cover/';             //封面图片目录
-    const THUMB_IMG_PATH = 'upload/thumb/';             //缩略图片目录
+    const COVER_IMG_PATH = '/upload/cover/';             //封面图片目录
+    const THUMB_IMG_PATH = '/upload/thumb/';             //缩略图片目录
+
+    public $canEmpty = false;
 
     //枚举视频上传图片路径
     public static function  enumVideoUploadPath()
@@ -49,13 +51,15 @@ class VideoUpload extends Model
     public function rules()
     {
         return [
-            [['coverImg','thumbImg'], 'file'],
+            [['coverImg','thumbImg'],'file','skipOnEmpty' => $this->canEmpty],
         ];
     }
 
 
     public function upload($videoModel)
     {
+        $videoModel->issue_date = strtotime($videoModel->issue_date);
+        if($this->canEmpty) return true;
         $status = true;
         if ($this->validate()) {
             file_exists(self::COVER_IMG_PATH) ?: FileHelper::createDirectory(self::COVER_IMG_PATH);
@@ -85,7 +89,6 @@ class VideoUpload extends Model
             //记录视频文件的名称
             $videoModel->name = isset($videoModel->name)?$videoModel->name:'未知';
             $videoModel->status = VideoInfo::STATUS_TRANS;
-            $videoModel->issue_date = \Yii::$app->formatter->asTimestamp($videoModel->issue_date);
             return $status;
         }else{
             return false;
