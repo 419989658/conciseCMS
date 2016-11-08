@@ -106,4 +106,5 @@ class VideoInfo extends \yii\db\ActiveRecord
         }
         return '未知状态';
     }
+
 }

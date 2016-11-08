@@ -21,11 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
 
-<?= \hyii2\avatar\AvatarWidget::widget(['imageUrl'=>'']);?>
+<!--// \hyii2\avatar\AvatarWidget::widget(['imageUrl'=>'']);-->
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options'=>[
+            'class'=>'box box-success table grid-view'
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -33,10 +36,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'name',
                 'format' => 'raw',
                 'value'=>function($model){
-                    return Html::img(VideoUpload::COVER_IMG_PATH.$model['cover_img'], ['height' => '32', 'width' => '32',])
+                    return Html::img(Yii::$app->params['imgServer'].VideoUpload::COVER_IMG_PATH.$model['cover_img'], ['height' => '32', 'width' => '32',])
                     .'&nbsp;&nbsp;'. Html::a ( $model ['name'], ['video/view',
                         'id' => $model['id'],], ['data-pjax' => 0, 'target' => '_blank']);
                 }
+            ],
+            [
+                'label'=>'视频标签',
+                'format'=>'raw',
+                'value'=>function($model){
+                    $videoModel = new \common\component\VideoComponent();
+                    $tags = $videoModel->getTagByVideoId($model->id);
+                    $labelStr='';
+                    foreach($tags as $tag){
+                        $labelStr.='<label class="btn btn-sm btn-success" style="margin:5px;">
+                        <a href="'.\yii\helpers\Url::to(['video/search','tagId'=>$tag['id']]).'" style="color:#fff;">
+                        '.$tag['name'] .'
+                        </a></label>';
+                    }
+                    return $labelStr;
+                },
             ],
             // 'issue_date',
             // 'play_time:datetime',

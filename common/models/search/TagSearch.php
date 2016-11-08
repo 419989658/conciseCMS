@@ -1,16 +1,16 @@
 <?php
 
-namespace common\models\query;
+namespace common\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\model\VideoInfo;
+use common\models\model\Tag;
 
 /**
- * VideoInfoQuery represents the model behind the search form about `common\models\model\VideoInfo`.
+ * TagSearch represents the model behind the search form about `common\models\model\Tag`.
  */
-class VideoInfoQuery extends VideoInfo
+class TagSearch extends Tag
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class VideoInfoQuery extends VideoInfo
     public function rules()
     {
         return [
-            [['id', 'issue_date', 'play_time', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'cover_img', 'thumb_img', 'play_url'], 'safe'],
+            [['id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,13 +41,12 @@ class VideoInfoQuery extends VideoInfo
      */
     public function search($params)
     {
-        $query = VideoInfo::find();
+        $query = Tag::find();
+
+        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>[
-                'pagesize'=>'10'
-            ]
         ]);
 
         $this->load($params);
@@ -58,19 +57,12 @@ class VideoInfoQuery extends VideoInfo
             return $dataProvider;
         }
 
+        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'issue_date' => $this->issue_date,
-            'play_time' => $this->play_time,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'cover_img', $this->cover_img])
-            ->andFilterWhere(['like', 'thumb_img', $this->thumb_img])
-            ->andFilterWhere(['like', 'play_url', $this->play_url]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

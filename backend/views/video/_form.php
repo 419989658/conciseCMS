@@ -14,7 +14,8 @@ $tags = array_combine(array_column($tagsData,'id'),array_column($tagsData,'name'
 ?>
 <div class="video-info-form">
     <?php $form = ActiveForm::begin([
-        'options' => ['enctype' => 'multipart/form-data'],
+        'options' => ['enctype' => 'multipart/form-data','class'=>'box box-success'],
+
         //'enableAjaxValidation' => true,
     ]); ?>
 

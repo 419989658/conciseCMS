@@ -11,6 +11,8 @@ use common\models\model\Tags;
 use Yii;
 use common\models\model\VideoInfo;
 use common\models\query\VideoInfoQuery;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -75,8 +77,11 @@ class VideoController extends Controller
      */
     public function actionView($id)
     {
+        $videoModel = new VideoComponent();
+        $tags = $videoModel->getTagByVideoId($id);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'tags'=> $tags,
         ]);
     }
 
@@ -129,10 +134,15 @@ class VideoController extends Controller
         $tagsData = new Tag();
         $uploadModel = new VideoUpload();
         $videoCpt = new VideoComponent();
-        $videoModel->tags = $videoCpt->getTagsByVideoId($id);
+        //获取到旧的标签
+        $oldTags = $videoModel->tags = $videoCpt->getTagIdsByVideoId($id);
+        $oldTags = is_array($oldTags)?$oldTags:[];
         $videoModel->issue_date = Yii::$app->formatter->AsDatetime($videoModel->issue_date);
         $uploadModel->canEmpty = true;
         if($videoModel->load(Yii::$app->request->post())){
+            //获取到新的标签
+            $newTags = Yii::$app->request->post('VideoInfo')['tags'];
+            $newTags = is_array($newTags)?$newTags:[];
             $uploadModel->coverImg = UploadedFile::getInstance($uploadModel,'coverImg');
             $uploadModel->thumbImg = UploadedFile::getInstance($uploadModel,'thumbImg');
 
@@ -140,6 +150,9 @@ class VideoController extends Controller
                 Yii::$app->session->setFlash('danger','上传错误');
             }
             $videoModel->save();
+            //处理标签
+            $videoCpt = new VideoComponent();
+            $videoCpt->progressTag($videoModel->id,$oldTags,$newTags);
             return $this->redirect(['view','id'=>$videoModel->id,]);
         }
         return $this->render('update', [

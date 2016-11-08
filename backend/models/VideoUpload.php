@@ -20,12 +20,12 @@ class VideoUpload extends Model
     public $thumbImg;//缩略图    ->对应数据库中的 thumb_img
 
     //视频
-    const ORIGIN_VIDEO_PATH = 'upload/video/origin/';   //原始视频文件
-    const PLAY_VIDEO_PATH = 'upload/video/play/';       //可播放视频文件夹（经过转码后的视频）
+    const ORIGIN_VIDEO_PATH = '/upload/video/origin/';   //原始视频文件
+    const PLAY_VIDEO_PATH = '/upload/video/play/';       //可播放视频文件夹（经过转码后的视频）
 
-    //图片
-    const COVER_IMG_PATH = '/upload/cover/';             //封面图片目录
-    const THUMB_IMG_PATH = '/upload/thumb/';             //缩略图片目录
+    //图片 (路径前面不能加斜杠,会导致文件上传失效,原因未知,等待查证 2016-11-8)
+    const COVER_IMG_PATH = 'upload/cover/';             //封面图片目录
+    const THUMB_IMG_PATH = 'upload/thumb/';             //缩略图片目录
 
     public $canEmpty = false;
 
@@ -52,14 +52,17 @@ class VideoUpload extends Model
     {
         return [
             [['coverImg','thumbImg'],'file','skipOnEmpty' => $this->canEmpty],
+           // [['coverImg','thumbImg'],'file'],
         ];
     }
 
 
     public function upload($videoModel)
     {
-        $videoModel->issue_date = strtotime($videoModel->issue_date);
-        if($this->canEmpty) return true;
+        //避免错的时间被转化
+        $issueTimestamp = strtotime($videoModel->issue_date);
+        $videoModel->issue_date = $issueTimestamp?$issueTimestamp:time();
+
         $status = true;
         if ($this->validate()) {
             file_exists(self::COVER_IMG_PATH) ?: FileHelper::createDirectory(self::COVER_IMG_PATH);
@@ -67,10 +70,15 @@ class VideoUpload extends Model
             $uploadFiles = [];
             $baseName = date('YmdHis') . '_' . rand(111, 999) ;
             //保存上传文件列表
-            $coverEx = explode('.',$this->coverImg->name);
-            $thumbEx = explode('.',$this->thumbImg->name);
-            $uploadFiles[self::TYPE_COVER] = $baseName . '_' . md5($this->coverImg->name).'.'.end($coverEx);
-            $uploadFiles[self::TYPE_THUMB] = $baseName . '_' . md5($this->thumbImg->name).'.'.end($thumbEx);
+            //VarDumper::dump($this->thumbImg->name);die;
+            if(!empty($this->coverImg)){
+                $coverEx = explode('.',$this->coverImg->name);
+                $uploadFiles[self::TYPE_COVER] = $baseName . '_' . md5($this->coverImg->name).'.'.end($coverEx);
+            }
+            if(!empty($this->thumbImg)){
+                $thumbEx = explode('.',$this->thumbImg->name);
+                $uploadFiles[self::TYPE_THUMB] = $baseName . '_' . md5($this->thumbImg->name).'.'.end($thumbEx);
+            }
 
             $videoUploadPath = self::enumVideoUploadPath();
             $videoProperty = self::enumVideoProperty();
@@ -83,9 +91,12 @@ class VideoUpload extends Model
                 }
             }
             //对视频进行赋值
-            $videoModel->cover_img = $uploadFiles[self::TYPE_COVER];
-            $videoModel->thumb_img = $uploadFiles[self::TYPE_THUMB];
-
+            if(!empty($this->coverImg)){
+                $videoModel->cover_img = $uploadFiles[self::TYPE_COVER];
+            }
+            if(!empty($this->thumbImg)){
+                $videoModel->thumb_img = $uploadFiles[self::TYPE_THUMB];
+            }
             //记录视频文件的名称
             $videoModel->name = isset($videoModel->name)?$videoModel->name:'未知';
             $videoModel->status = VideoInfo::STATUS_TRANS;
