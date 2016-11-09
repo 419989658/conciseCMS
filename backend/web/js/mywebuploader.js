@@ -153,7 +153,9 @@ jQuery(function() {
     uploader.on('stopUpload',function(file){
         uploader.stop(true);
     });
-
+    uploader.on('error',function(type){
+        console.log(type);
+    });
     uploader.on( 'all', function( type ) {
         if ( type === 'startUpload' ) {
             state = 'uploading';
