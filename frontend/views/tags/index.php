@@ -11,13 +11,10 @@ $this->params['breadcrumbs'][]=$this->title;
     <div class="col-md-3">
         <div class="media">
             <div class="media-left">
-                <a href="#">
-                    <img class="media-object" width="54px" height="54px" src="<?php echo "$tag->tag_img"; ?>" alt="<?php echo "$tag->tag"; ?>">
-                </a>
             </div>
             <div class="media-body">
                 <h4 class="media-heading">
-                    <a href="<?php echo \yii\helpers\Url::toRoute(['post/index','id'=>$tag->id]); ?>"><?php echo "$tag->tag"; ?></a>
+                    <a href="<?php echo \yii\helpers\Url::toRoute(['video/find-video-by-tag','tagId'=>$tag->id]); ?>" class="btn btn-primary"><?php echo "$tag->name"; ?></a>
                 </h4>
             </div>
         </div>

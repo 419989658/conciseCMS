@@ -190,4 +190,12 @@ class VideoController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionSearch($tagId)
+    {
+        $videoModel = new \common\component\VideoComponent();
+        $filterData = $videoModel->getVideoByTagId($tagId);
+        $tag = Tag::findOne(['id'=>$tagId]);
+        return $this->render('find-video-by-tag',['filterData'=>$filterData,'tag'=>$tag]);
+    }
 }

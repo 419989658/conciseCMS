@@ -35,16 +35,9 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label'=>'文章' , 'url'=>['/post/index']],
-        ['label'=>'标签' , 'url'=>['/tag/index']],
-        [
-            'label'=>'界面',
-            'items'=>[
-                ['label'=>'测试文章','url'=>['/status/index']],
-                ['label'=>'测试学生','url'=>['/student/index']],
-            ],
-        ],
         ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => '视频', 'url' => ['/video/index']],
+        ['label'=>'标签','url'=>['/tags/index']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
     ];

@@ -8,6 +8,7 @@
 namespace common\component;
 
 
+use common\models\model\VideoInfo;
 use yii\base\Component;
 use yii\db\Query;
 use yii\helpers\VarDumper;
@@ -32,6 +33,10 @@ class VideoComponent extends Component
            ->execute();
     }
 
+    public function findAllVideo()
+    {
+
+    }
     /**
      * 批量删除标签
      * @param $videoId
@@ -125,5 +130,24 @@ class VideoComponent extends Component
             ->from('t_video_tag_pivot')
             ->where(['tag'=>$tags])
             ->all();
+    }
+
+    /*
+
+    sql:
+    ----------------------------------------------------
+    SELECT *
+    FROM t_video_info
+    WHERE id IN (
+		SELECT video_id
+		FROM t_video_tag_pivot
+		WHERE tag_id = 999
+	)
+    ---------------------------------------------------
+    */
+    public function getVideoByTagId($tagId){
+        $sql = 'select * from t_video_info where id IN (select video_id FROM  t_video_tag_pivot WHERE tag_id=:tagId)';
+        $command = \Yii::$app->db->createCommand($sql)->bindValue(':tagId',$tagId);
+        return $command->queryAll();
     }
 }

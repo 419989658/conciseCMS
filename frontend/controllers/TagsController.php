@@ -2,13 +2,13 @@
 
 namespace frontend\controllers;
 
-use common\models\Tags;
+use common\models\model\Tag;
 
-class TagController extends \yii\web\Controller
+class TagsController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        $tags = Tags::find()->all();
+        $tags = Tag::find()->all();
         return $this->render('index',['tags'=>$tags]);
     }
 

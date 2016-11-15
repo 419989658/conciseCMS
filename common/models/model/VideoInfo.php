@@ -25,8 +25,9 @@ use yii\db\ActiveRecord;
 class VideoInfo extends \yii\db\ActiveRecord
 {
     const STATUS_NORMAL = 0;
-    const STATUS_TRANS = 1;     //转码中
-    const STATUS_FAIL = 2;      //失败
+    const STATUS_TRANS = 1;         //转码中
+    const STATUS_FAIL = 2;          //失败
+    const STATUS_SENSITIVE = 3;     //sensitive
 
     public $tags;
 
